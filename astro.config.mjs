@@ -6,5 +6,5 @@ const sitePath = isUserOrOrgPagesRepo ? '' : `/${repo}`;
 
 export default defineConfig({
   site: `https://${owner}.github.io${sitePath}`,
-  base: isUserOrOrgPagesRepo ? '/' : `/${repo}`
+  base: isUserOrOrgPagesRepo ? '/' : `/${repo}/`
 });
