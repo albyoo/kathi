@@ -46,7 +46,8 @@ const headerSrc = kathiHeader.src;
 	h1 {
 		font-size: 6rem;
 		margin: 40px 0;
-		animation: slideUp 2s ease forwards,
+		animation:
+			slideUp 2s ease forwards,
 			jiggle-1 10s 2.3s ease infinite;
 	}
 
@@ -64,19 +65,25 @@ const headerSrc = kathiHeader.src;
 	/* jiggle 2s 2.3s ease infinite */
 	@keyframes jiggle-1 {
 		0% {
-			transform: rotate(-1deg);
+			transform: rotate(0deg);
+		}
+		5% {
+			transform: rotate(-3deg) scale(1.05);
 		}
 		10% {
-			transform: rotate(1deg);
+			transform: rotate(0deg);
 		}
 		50% {
-			transform: rotate(1deg);
+			transform: rotate(0deg);
+		}
+		55% {
+			transform: rotate(3deg) scale(1.05);
 		}
 		60% {
-			transform: rotate(-1deg);
+			transform: rotate(0deg);
 		}
 		100% {
-			transform: rotate(-1deg);
+			transform: rotate(0deg);
 		}
 	}
 
