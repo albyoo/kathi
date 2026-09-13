@@ -1,24 +1,31 @@
 import { defineConfig } from 'astro/config';
 
-const [owner = 'albyoo', repo = 'kathi'] = (process.env.GITHUB_REPOSITORY ?? 'albyoo/kathi').split('/');
-const isUserOrOrgPagesRepo = repo === `${owner}.github.io`;
-const defaultSitePath = isUserOrOrgPagesRepo ? '' : `/${repo}`;
-const defaultSite = `https://${owner}.github.io${defaultSitePath}`;
-const defaultBase = isUserOrOrgPagesRepo ? '/' : `/${repo}/`;
-
 const pagesBaseUrl = process.env.PAGES_BASE_URL;
-const isAbsolutePagesUrl = Boolean(pagesBaseUrl && /^https?:\/\//.test(pagesBaseUrl));
+const repository = process.env.GITHUB_REPOSITORY;
 
-const parsedPagesBase = pagesBaseUrl
-  ? (isAbsolutePagesUrl ? new URL(pagesBaseUrl).pathname : pagesBaseUrl)
-  : defaultBase;
+let site;
+let base = '/';
 
-const normalizedBasePath = parsedPagesBase === '/' ? '/' : `/${parsedPagesBase.replace(/^\/+|\/+$/g, '')}/`;
-const site = isAbsolutePagesUrl
-  ? pagesBaseUrl.replace(/\/+$/g, '')
-  : `https://${owner}.github.io${normalizedBasePath === '/' ? '' : normalizedBasePath.slice(0, -1)}`;
+if (pagesBaseUrl) {
+  if (/^https?:\/\//.test(pagesBaseUrl)) {
+    const url = new URL(pagesBaseUrl);
+    site = url.origin;
+    base = url.pathname === '/' ? '/' : `${url.pathname.replace(/\/+$/g, '')}/`;
+  } else {
+    base = pagesBaseUrl === '/' ? '/' : `/${pagesBaseUrl.replace(/^\/+|\/+$/g, '')}/`;
+  }
+} else if (repository) {
+  const [owner = '', repo = ''] = repository.split('/');
+  const isUserOrOrgPagesRepo = repo === `${owner}.github.io`;
+  if (owner) {
+    site = `https://${owner}.github.io`;
+  }
+  if (repo && !isUserOrOrgPagesRepo) {
+    base = `/${repo}/`;
+  }
+}
 
 export default defineConfig({
-  site: pagesBaseUrl ? site : defaultSite,
-  base: pagesBaseUrl ? normalizedBasePath : defaultBase
+  site,
+  base
 });
