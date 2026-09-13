@@ -4,6 +4,8 @@ Starter app for a static HTML and CSS website using Astro, including a GitHub Pa
 
 ## Development
 
+Requires Node.js 22.12.0 or newer.
+
 ```bash
 npm install
 npm run dev
